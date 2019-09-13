@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
         editTextNome = findViewById(R.id.edit_text_nome);
         listView = findViewById(R.id.list_view);
 
+        editTextNome.setText("");
+
         conectarBanco();
         eventoBanco();
     }
@@ -77,42 +79,22 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                         excluirDado(tarefas.get(i));
+                        return true;
 
                         /*databaseReference.child("tarefa")
                                 .child(tarefas.get(i).getUuid()).
                                 removeValue();*/
 
-                        return false;
+
                     }
                 });
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void eventoBanco2CliqueSimples(){
-        databaseReference.child("tarefa").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    Tarefa tarefa = snapshot.getValue(Tarefa.class);
-                    tarefas.add(tarefa);
-                }
-
-                arrayAdapterTarefa = new TarefaAdapter(MainActivity.this, (ArrayList<Tarefa>) tarefas);
-                listView.setAdapter(arrayAdapterTarefa);
-
-                //Aqui o valor precisa ser booleano//
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                         concluirTarefa(tarefas.get(i));
-
+                        return;
                     }
                 });
 
@@ -124,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     //Salvar objeto no banco
     public void salvarDado(View v){
@@ -132,9 +115,6 @@ public class MainActivity extends AppCompatActivity {
         databaseReference.child("tarefa").
                 child(tarefa.getUuid()).
                 setValue(tarefa);
-
-
-
     }
 
     public void excluirDado (final Tarefa tarefa) {
@@ -167,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
         builder.setTitle(R.string.app_name);
         builder.setMessage("Você deseja concluir esta tarefa?");
         builder.setIcon(R.drawable.ic_launcher_background);
+
         builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
