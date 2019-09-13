@@ -5,6 +5,7 @@ public class Tarefa {
     //Atributos da classe
     private String uuid;
     private String nome;
+    private String imageSrc = "https://freeiconshop.com/wp-content/uploads/edd/task-done-outline.png";
     private boolean status;
 
     public Tarefa(){
@@ -40,6 +41,14 @@ public class Tarefa {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public String getImageSrc() {
+        return imageSrc;
+    }
+
+    public void setImageSrc(String imageSrc) {
+        this.imageSrc = imageSrc;
     }
 
     @Override

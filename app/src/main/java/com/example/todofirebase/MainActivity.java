@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
         editTextNome.setText("");
 
+        tarefas.clear();
+
         conectarBanco();
         eventoBanco();
     }
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Tarefa tarefa = snapshot.getValue(Tarefa.class);
                     tarefas.add(tarefa);
+
                 }
 
                 arrayAdapterTarefa = new TarefaAdapter(MainActivity.this, (ArrayList<Tarefa>) tarefas);
@@ -84,8 +87,6 @@ public class MainActivity extends AppCompatActivity {
                         /*databaseReference.child("tarefa")
                                 .child(tarefas.get(i).getUuid()).
                                 removeValue();*/
-
-
                     }
                 });
 
@@ -97,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
                         return;
                     }
                 });
-
             }
 
             @Override
@@ -106,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
     //Salvar objeto no banco
     public void salvarDado(View v){
@@ -128,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
                 databaseReference.child("tarefa").
                         child(tarefa.getUuid()).
                         removeValue();
-
             }
         });
 
@@ -151,9 +149,12 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                tarefa.setStatus(true);
+
                 databaseReference.child("tarefa").
                         child(tarefa.getUuid()).
-                        removeValue();
+                        setValue(tarefa);
+
             }
         });
 
